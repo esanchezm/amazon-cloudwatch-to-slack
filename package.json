@@ -1,5 +1,5 @@
 {
-  "name": "amazon-sns-to-hipchat",
+  "name": "amazon-cloudwatch-to-hipchat",
   "description": "Relay messages from Amazon SNS to a HipChat room",
   "version": "0.0.1",
   "private": true,
