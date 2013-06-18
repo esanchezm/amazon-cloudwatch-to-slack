@@ -22,7 +22,7 @@ cd amazon-cloudwatch-to-hipchat
 heroku apps:create
 heroku config:set HIPCHAT_API_TOKEN=secret \
                   HIPCHAT_ROOM_ID=12345 \
-                  HIPCHAT_FROM_NAME="Amazon SNS"
+                  HIPCHAT_FROM_NAME="Amazon CloudWatch"
 git push heroku master
 ```
 
