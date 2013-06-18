@@ -1,4 +1,4 @@
-amazon-cloudwatch-to-hipchat
+Amazon CloudWatch to HipChat
 ============================
 
 Relay alerts from Amazon CloudWatch to a HipChat room
@@ -22,7 +22,8 @@ cd amazon-cloudwatch-to-hipchat
 heroku apps:create
 heroku config:set HIPCHAT_API_TOKEN=secret \
                   HIPCHAT_ROOM_ID=12345 \
-                  HIPCHAT_FROM_NAME="Amazon CloudWatch"
+                  HIPCHAT_FROM_NAME="AWS CloudWatch"
+# Note that your HIPCHAT_FROM_NAME must be no more than 15 characters long: https://www.hipchat.com/docs/api/method/rooms/message
 git push heroku master
 ```
 
