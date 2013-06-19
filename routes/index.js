@@ -19,11 +19,18 @@ exports.index = function(req, res){
             res.send('Ok');
         });
     } else if (sns.Type == 'Notification') {
+        var message = '';
+        if (sns.Subject === undefined) {
+            message = JSON.stringify(sns.Message);
+        } else {
+            message = sns.Subject;
+        }
+
         var hipchatUrl = 'https://api.hipchat.com/v1/rooms/message?' +
                     'auth_token=' + process.env.HIPCHAT_API_TOKEN + '&' +
                     'room_id=' + process.env.HIPCHAT_ROOM_ID + '&' +
                     'from=' + process.env.HIPCHAT_FROM_NAME + '&' +
-                    'message=' + sns.Subject + '&' +
+                    'message=' + message + '&' +
                     'notify=1&' +
                     'format=json';
 
