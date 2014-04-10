@@ -32,6 +32,7 @@ exports.index = function(req, res){
             '.slack.com/services/hooks/incoming-webhook?token=' +
             process.env.SLACK_TOKEN;
 
+        console.log("Sending message to Slack", slackUrl);
         request.post(
             slackUrl,
             {
@@ -45,11 +46,11 @@ exports.index = function(req, res){
             },
             function (err, result, body) {
                 if (err) {
-                    console.log("Error sending message to HipChat", err, slackUrl, body);
+                    console.log("Error sending message to Slack", err, slackUrl, body);
                     return res.send('Error', 500);
                 }
 
-                console.log("Sent message to HipChat", slackUrl);
+                console.log("Sent message to Slack", slackUrl);
 
                 res.send('Ok');
             }
