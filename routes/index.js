@@ -26,23 +26,34 @@ exports.index = function(req, res){
             message = sns.Subject;
         }
 
-        var hipchatUrl = 'https://api.hipchat.com/v1/rooms/message?' +
-                    'auth_token=' + process.env.HIPCHAT_API_TOKEN + '&' +
-                    'room_id=' + process.env.HIPCHAT_ROOM_ID + '&' +
-                    'from=' + process.env.HIPCHAT_FROM_NAME + '&' +
-                    'message=' + message + '&' +
-                    'notify=1&' +
-                    'format=json';
+        var slackUrl =
+            'https://' +
+            process.env.SLACK_COMPANY_NAME +
+            '.slack.com/services/hooks/incoming-webhook?token=' +
+            process.env.SLACK_TOKEN;
 
-        request(hipchatUrl, function (err, result, body) {
-            if (err) {
-                console.log("Error sending message to HipChat", err, hipChatUrl, body);
-                return res.send('Error', 500);
+        request(
+            {
+                url: slackUrl,
+                method: 'POST',
+                form: {
+                    "payload": {
+                        "text": body,
+                        "subtype": "bot_message",
+                        "username": process.env.SLACK_USERNAME
+                    }
+                }
+            },
+            function (err, result, body) {
+                if (err) {
+                    console.log("Error sending message to HipChat", err, slackUrl, body);
+                    return res.send('Error', 500);
+                }
+
+                console.log("Sent message to HipChat", slackUrl);
+
+                res.send('Ok');
             }
-
-            console.log("Sent message to HipChat", hipchatUrl);
-
-            res.send('Ok');
-        });
+        );
     }
 };

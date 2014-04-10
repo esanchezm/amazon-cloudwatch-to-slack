@@ -1,29 +1,30 @@
-Amazon CloudWatch to HipChat
+Amazon CloudWatch to Slack
 ============================
 
-Relay alerts from Amazon CloudWatch to a HipChat room
+Relay alerts from Amazon CloudWatch to a Slack room.
+
+This code is 100% based on [Amazon CloudWatch to Hipchat](https://github.com/blackline/amazon-cloudwatch-to-hipchat)
+and it could not be possible without it.
 
 Setup
 =====
 
 Requirements:
 * A [Heroku](http://heroku.com) account
-* A [HipChat](http://hipchat.com) Account
-* A HipChat [Notification Token](https://www.hipchat.com/docs/api/auth)
-* The HipChat [Room ID](https://hipchat.com/admin/rooms) where you want to send alerts
+* A [Slack](http://slac.com) Account
+* A Slac [Incoming Webook Token](https://slack.com/services/new/incoming-webhook) configured to post messages to the room you want
 * An Amazon AWS account with [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/) and [Amazon SNS](https://aws.amazon.com/sns/) setup and enabled
 
 Deploy your application to to Heroku:
 ```bash
 cd /path/to/wherever
-git clone https://github.com/blackline/amazon-cloudwatch-to-hipchat.git
+git clone https://github.com/esanchezm/amazon-cloudwatch-to-slack.git
 
-cd amazon-cloudwatch-to-hipchat
+cd amazon-cloudwatch-to-slack
 heroku apps:create
-heroku config:set HIPCHAT_API_TOKEN=secret \
-                  HIPCHAT_ROOM_ID=12345 \
-                  HIPCHAT_FROM_NAME="AWS CloudWatch"
-# Note that your HIPCHAT_FROM_NAME must be no more than 15 characters long: https://www.hipchat.com/docs/api/method/rooms/message
+heroku config:set SLACK_COMPANY_NAME=yourcompany \
+                  SLACK_TOKEN=12345 \
+                  SLACK_USERNAME="AWS CloudWatch"
 git push heroku master
 ```
 

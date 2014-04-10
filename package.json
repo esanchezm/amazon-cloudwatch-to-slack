@@ -1,6 +1,6 @@
 {
-  "name": "amazon-cloudwatch-to-hipchat",
-  "description": "Relay messages from Amazon SNS to a HipChat room",
+  "name": "amazon-cloudwatch-to-slack",
+  "description": "Relay messages from Amazon SNS to a Slack room",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
