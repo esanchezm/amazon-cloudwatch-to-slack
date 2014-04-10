@@ -37,7 +37,7 @@ exports.index = function(req, res){
             slackUrl,
             {
                 form: {
-                    "payload": '{"text": "`'+message+'`" ,"subtype": "bot_message","username": "'+process.env.SLACK_USERNAME+'"}'
+                    "payload": '{"text": "`'+message.replace(/"/g, '\\"')+'`", "subtype": "bot_message", "username": "'+process.env.SLACK_USERNAME+'"}'
                 }
             },
             function (err, result, body) {
