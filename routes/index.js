@@ -32,16 +32,12 @@ exports.index = function(req, res){
             '.slack.com/services/hooks/incoming-webhook?token=' +
             process.env.SLACK_TOKEN;
 
-        console.log("Sending message to Slack", slackUrl);
+        console.log("Sending message to Slack", message, slackUrl);
         request.post(
             slackUrl,
             {
                 form: {
-                    "payload": {
-                        "text": message,
-                        "subtype": "bot_message",
-                        "username": process.env.SLACK_USERNAME
-                    }
+                    "payload": '{"text": "`'+message+'`" ,"subtype": "bot_message","username": "'+process.env.SLACK_USERNAME+'"}'
                 }
             },
             function (err, result, body) {
