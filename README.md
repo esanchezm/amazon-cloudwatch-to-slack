@@ -24,7 +24,8 @@ cd amazon-cloudwatch-to-slack
 heroku apps:create
 heroku config:set SLACK_COMPANY_NAME=yourcompany \
                   SLACK_TOKEN=12345 \
-                  SLACK_USERNAME="AWS CloudWatch"
+                  SLACK_USERNAME="AWS CloudWatch" \
+                  SLACK_ICON_URL="http://www.example.com/bot_avatar.png"
 git push heroku master
 ```
 

@@ -37,7 +37,7 @@ exports.index = function(req, res){
             slackUrl,
             {
                 form: {
-                    "payload": '{"text": "`'+message.replace(/"/g, '\\"')+'`", "subtype": "bot_message", "username": "'+process.env.SLACK_USERNAME+'", "icon_url": "http://i.imgur.com/ttpExjL.png"}'
+                    "payload": '{"text": "`'+message.replace(/"/g, '\\"')+'`", "subtype": "bot_message", "username": "'+process.env.SLACK_USERNAME+'", "icon_url": "'+process.env.SLACK_ICON+'"}'
                 }
             },
             function (err, result, body) {
