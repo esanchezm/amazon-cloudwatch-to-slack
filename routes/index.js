@@ -25,7 +25,7 @@ exports.index = function(req, res){
         } else {
             message = sns.Subject;
         }
-        message = message.replace(/"/g, '\\"')
+        message = message.replace(/"/g, '\\"');
 
         var attachments;
         if (sns.Message.AlarmName !== undefined) {
@@ -38,17 +38,17 @@ exports.index = function(req, res){
                         {
                             "title": "Alarm",
                             "value": sns.Message.AlarmName,
-                            "short": true,
+                            "short": true
                         },
                         {
                             "title": "Status",
                             "value": sns.Message.NewStateValue,
-                            "short": true,
+                            "short": true
                         },
                         {
                             "title": "Reason",
                             "value": sns.Message.NewStateReason,
-                            "short": false,
+                            "short": false
                         }
                     ]
                 }
@@ -64,7 +64,7 @@ exports.index = function(req, res){
             "text": message,
             "subtype": "bot_message",
             "username": process.env.SLACK_USERNAME,
-            "icon_url": process.env.SLACK_ICON_URL,
+            "icon_url": process.env.SLACK_ICON_URL
         };
 
         if (attachments) {
