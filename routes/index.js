@@ -28,26 +28,27 @@ exports.index = function(req, res){
         message = message.replace(/"/g, '\\"');
 
         var attachments;
-        if (sns.Message.AlarmName !== undefined) {
+        var json_message = JSON.parse(sns.Message);
+        if (json_message.AlarmName) {
             attachments = [
                 {
                     "fallback": message,
                     "text" : message,
-                    "color": sns.Message.NewStateValue == "ALARM" ? "warning" : "good",
+                    "color": json_message.NewStateValue == "ALARM" ? "warning" : "good",
                     "fields": [
                         {
                             "title": "Alarm",
-                            "value": sns.Message.AlarmName,
+                            "value": json_message.AlarmName,
                             "short": true
                         },
                         {
                             "title": "Status",
-                            "value": sns.Message.NewStateValue,
+                            "value": json_message.NewStateValue,
                             "short": true
                         },
                         {
                             "title": "Reason",
-                            "value": sns.Message.NewStateReason,
+                            "value": json_message.NewStateReason,
                             "short": false
                         }
                     ]
