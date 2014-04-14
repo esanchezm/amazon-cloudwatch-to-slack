@@ -25,19 +25,58 @@ exports.index = function(req, res){
         } else {
             message = sns.Subject;
         }
+        message = message.replace(/"/g, '\\"')
+
+        var attachments;
+        if (sns.Message.AlarmName !== undefined) {
+            attachments = [
+                {
+                    "fallback": message,
+                    "text" : message,
+                    "color": sns.Message.NewStateValue == "ALARM" ? "warning" : "good",
+                    "fields": [
+                        {
+                            "title": "Alarm",
+                            "value": sns.Message.AlarmName,
+                            "short": true,
+                        },
+                        {
+                            "title": "Status",
+                            "value": sns.Message.NewStateValue,
+                            "short": true,
+                        },
+                        {
+                            "title": "Reason",
+                            "value": sns.Message.NewStateReason,
+                            "short": false,
+                        }
+                    ]
+                }
+            ];
+        }
 
         var slackUrl =
             'https://' +
             process.env.SLACK_COMPANY_NAME +
             '.slack.com/services/hooks/incoming-webhook?token=' +
             process.env.SLACK_TOKEN;
+        var payload = {
+            "text": message,
+            "subtype": "bot_message",
+            "username": process.env.SLACK_USERNAME,
+            "icon_url": process.env.SLACK_ICON_URL,
+        };
+
+        if (attachments) {
+            payload["attachments"] = attachments;
+        }
 
         console.log("Sending message to Slack", message, slackUrl);
         request.post(
             slackUrl,
             {
                 form: {
-                    "payload": '{"text": "`'+message.replace(/"/g, '\\"')+'`", "subtype": "bot_message", "username": "'+process.env.SLACK_USERNAME+'", "icon_url": "'+process.env.SLACK_ICON_URL+'"}'
+                    "payload": JSON.stringify(payload)
                 }
             },
             function (err, result, body) {
