@@ -64,9 +64,19 @@ exports.index = function(req, res){
         var payload = {
             "text": message,
             "subtype": "bot_message",
-            "username": process.env.SLACK_USERNAME,
-            "icon_url": process.env.SLACK_ICON_URL
         };
+
+        if (typeof process.env.SLACK_USERNAME != "undefined") {
+            payload["username"] = process.env.SLACK_USERNAME;
+        }
+
+        if (typeof process.env.SLACK_ICON_URL != "undefined") {
+            payload["icon_url"] = process.env.SLACK_ICON_URL;
+        }
+
+        if (typeof process.env.SLACK_CHANNEL != "undefined") {
+            payload["channel"] = process.env.SLACK_CHANNEL;
+        }
 
         if (attachments) {
             payload["attachments"] = attachments;

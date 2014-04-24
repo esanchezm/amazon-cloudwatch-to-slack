@@ -10,10 +10,10 @@ Setup
 =====
 
 Requirements:
-* A [Heroku](http://heroku.com) account
-* A [Slack](http://slac.com) Account
-* A Slac [Incoming Webook Token](https://slack.com/services/new/incoming-webhook) configured to post messages to the room you want
-* An Amazon AWS account with [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/) and [Amazon SNS](https://aws.amazon.com/sns/) setup and enabled
+* A [Heroku](http://heroku.com) account.
+* A [Slack](http://slack.com) Account.
+* A Slack [Incoming Webook Token](https://slack.com/services/new/incoming-webhook) configured to post messages to the room you want.
+* An Amazon AWS account with [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/) and [Amazon SNS](https://aws.amazon.com/sns/) setup and enabled.
 
 Deploy your application to to Heroku:
 ```bash
@@ -24,9 +24,15 @@ cd amazon-cloudwatch-to-slack
 heroku apps:create
 heroku config:set SLACK_COMPANY_NAME=yourcompany \
                   SLACK_TOKEN=12345 \
+git push heroku master
+```
+
+You can optionally set a diferent slack channel, username or avatar to customize messages:
+
+```
+heroku config:set SLACK_CHANNEL=#yourchannel\
                   SLACK_USERNAME="AWS CloudWatch" \
                   SLACK_ICON_URL="http://www.example.com/bot_avatar.png"
-git push heroku master
 ```
 
 Setup Amazon SNS:
