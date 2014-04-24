@@ -3,6 +3,9 @@
   "description": "Relay messages from Amazon SNS to a Slack room",
   "version": "0.0.1",
   "private": true,
+  "engines": {
+    "node": "0.10.x"
+  },
   "dependencies": {
     "express": "3.x",
     "jade": "*",
