@@ -25,7 +25,6 @@ exports.index = function(req, res){
         } else {
             message = sns.Subject;
         }
-        message = message.replace(/"/g, '\\"');
 
         var attachments;
         var json_message = JSON.parse(sns.Message);
