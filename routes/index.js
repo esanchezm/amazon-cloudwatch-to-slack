@@ -58,7 +58,7 @@ exports.index = function(req, res){
                     ]
                 }
             ];
-        } else if (json.notificationType == "Bounce") {
+        } else if (json_message.notificationType == "Bounce") {
             ses_notification = true;
             message = "SES email bounced";
             var bounce = json_message.bounce;
@@ -91,7 +91,7 @@ exports.index = function(req, res){
                     ]
                 }
             ];
-        } else if (json.notificationType == "Complaint") {
+        } else if (json_message.notificationType == "Complaint") {
             ses_notification = true;
             message = "SES email complaint";
             var complaint = json_message.complaint;
@@ -134,7 +134,7 @@ exports.index = function(req, res){
                     }
                 );
             }
-        } else if (json.notificationType == "Delivery") {
+        } else if (json_message.notificationType == "Delivery") {
             ses_notification = true;
             message = "SES email delivery";
             var mail = json_message.mail;
