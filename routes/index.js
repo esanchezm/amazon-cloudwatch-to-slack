@@ -20,6 +20,7 @@ exports.index = function(req, res){
         });
     } else if (sns.Type == 'Notification') {
         var message = '';
+        var ses_notification = false;
         var payload = {
             "subtype": "bot_message",
             "text": ""
@@ -58,6 +59,7 @@ exports.index = function(req, res){
                 }
             ];
         } else if (json.notificationType == "Bounce") {
+            ses_notification = true;
             message = "SES email bounced";
             var bounce = json_message.bounce;
             var recipients = [];
@@ -90,6 +92,7 @@ exports.index = function(req, res){
                 }
             ];
         } else if (json.notificationType == "Complaint") {
+            ses_notification = true;
             message = "SES email complaint";
             var complaint = json_message.complaint;
             var recipients = [];
@@ -132,6 +135,7 @@ exports.index = function(req, res){
                 );
             }
         } else if (json.notificationType == "Delivery") {
+            ses_notification = true;
             message = "SES email delivery";
             var mail = json_message.mail;
             attachments = [
@@ -176,6 +180,20 @@ exports.index = function(req, res){
 
         if (typeof process.env.SLACK_CHANNEL != "undefined") {
             payload["channel"] = process.env.SLACK_CHANNEL;
+        }
+
+        if (ses_notification) {
+            if (typeof process.env.SLACK_SES_USERNAME != "undefined") {
+                payload["username"] = process.env.SLACK_SES_USERNAME;
+            }
+
+            if (typeof process.env.SLACK_SES_ICON_URL != "undefined") {
+                payload["icon_url"] = process.env.SLACK_SES_ICON_URL;
+            }
+
+            if (typeof process.env.SLACK_SES_CHANNEL != "undefined") {
+                payload["channel"] = process.env.SLACK_SES_CHANNEL;
+            }
         }
 
         if (attachments) {

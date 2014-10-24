@@ -35,6 +35,14 @@ heroku config:set SLACK_CHANNEL=#yourchannel\
                   SLACK_ICON_URL="http://www.example.com/bot_avatar.png"
 ```
 
+Additional configuration parameters for SES notifications:
+
+```
+heroku config:set SLACK_SES_CHANNEL=#otherchannel\
+                  SLACK_SES_USERNAME="AWS SES" \
+                  SLACK_SES_ICON_URL="http://www.example.com/bot_avatar.png"
+```
+
 Setup Amazon SNS:
 * Create a new Topic, or select an existing Topic
 * Add a New Subscription to the topic
