@@ -58,6 +58,8 @@ exports.index = function(req, res){
                     ]
                 }
             ];
+        } else if (json_message.notificationType == "AmazonSnsSubscriptionSucceeded") {
+            message = json_message.message;
         } else if (json_message.notificationType == "Bounce") {
             ses_notification = true;
             message = "SES email bounced";
