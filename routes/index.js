@@ -162,10 +162,10 @@ exports.index = function(req, res) {
             message = sns.Subject;
         }
 
-        var attachments;
         var json_message = JSON.parse(sns.Message);
         if (json_message.AlarmName) {
-            attachments = [
+            payload['text'] = message;
+            payload['attachments'] = [
                 {
                     "fallback": message,
                     "text" : message,
@@ -234,10 +234,6 @@ exports.index = function(req, res) {
             }
         }
 
-        if (attachments) {
-            payload["attachments"] = attachments;
-        }
-        payload['text'] = message;
         payload["subtype"] = "bot_message";
 
         console.log("Sending message to Slack", payload['text'], slackUrl);
