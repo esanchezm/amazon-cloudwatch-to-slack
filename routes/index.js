@@ -1,7 +1,138 @@
 /**
  * Recieve a POST from Amazon SNS
  */
-exports.index = function(req, res){
+
+function process_ses_bounce_notification(json_message) {
+    var payload = {};
+    var message = "SES email bounced";
+    var bounce = json_message.bounce;
+    var recipients = [];
+    bounce.bouncedRecipients.forEach(function(recipient) {
+        recipients.push(recipient.emailAddress);
+    });
+
+    var attachments = [
+        {
+            "fallback": message,
+            "text" : message,
+            "color": "warning",
+            "fields": [
+                {
+                    "title": "Recipients",
+                    "value": recipients.join(", "),
+                    "short": true
+                },
+                {
+                    "title": "Sender",
+                    "value": json_message.mail.source,
+                    "short": true
+                },
+                {
+                    "title": "Bounce type",
+                    "value": bounce.bounceType + " - " + bounce.bounceSubType,
+                    "short": false
+                }
+            ]
+        }
+    ];
+
+    if (bounce.bouncedRecipients[0].diagnosticCode) {
+        attatchments[0]["fields"].push(
+            {
+                "title": "Diagnostic",
+                "value": bounce.bouncedRecipients[0].diagnosticCode,
+                "short": false
+            }
+        );
+    }
+
+    payload["attachments"] = attachments;
+    payload['text'] = message;
+
+    return payload;
+}
+
+function process_ses_complaint_notification(json_message) {
+    var payload = {};
+    var message = "SES email complaint";
+    var complaint = json_message.complaint;
+    var recipients = [];
+    complaint.complainedRecipients.forEach(function(recipient) {
+        recipients.push(recipient.emailAddress);
+    });
+
+    var attachments = [
+        {
+            "fallback": message,
+            "text" : message,
+            "color": "warning",
+            "fields": [
+                {
+                    "title": "Recipients",
+                    "value": recipients.join(", "),
+                    "short": true
+                },
+                {
+                    "title": "Sender",
+                    "value": json_message.mail.source,
+                    "short": true
+                }
+            ]
+        }
+    ];
+
+    if (complaint.complaintFeedbackType) {
+        attatchments[0]["fields"].push(
+            {
+                "title": "Complain type",
+                "value": complaint.complaintFeedbackType,
+                "short": true
+            }
+        );
+    }
+
+    payload["attachments"] = attachments;
+    payload['text'] = message;
+
+    return payload;
+}
+
+function process_ses_delivery_notification(json_message) {
+    var payload = {};
+    var message = "SES email delivery";
+    var mail = json_message.mail;
+    attachments = [
+        {
+            "fallback": message,
+            "text" : message,
+            "color": "good",
+            "fields": [
+                {
+                    "title": "Recipients",
+                    "value": mail.destination.join(", "),
+                    "short": true
+                },
+                {
+                    "title": "Sender",
+                    "value": mail.source,
+                    "short": true
+                },
+                {
+                    "title": "Result",
+                    "value": json_message.delivery.smtpResponse,
+                    "short": false
+                }
+            ]
+        }
+    ];
+
+    payload["attachments"] = attachments;
+    payload['text'] = message;
+
+    return payload;
+}
+
+exports.index = function(req, res) {
     var request = require('request');
 
     var sns = JSON.parse(req.text);
@@ -62,113 +193,13 @@ exports.index = function(req, res){
             message = json_message.message;
         } else if (json_message.notificationType == "Bounce") {
             ses_notification = true;
-            message = "SES email bounced";
-            var bounce = json_message.bounce;
-            var recipients = [];
-            bounce.bouncedRecipients.forEach(function(recipient) {
-                recipients.push(recipient.emailAddress);
-            });
-
-            attachments = [
-                {
-                    "fallback": message,
-                    "text" : message,
-                    "color": "warning",
-                    "fields": [
-                        {
-                            "title": "Recipients",
-                            "value": recipients.join(", "),
-                            "short": true
-                        },
-                        {
-                            "title": "Sender",
-                            "value": json_message.mail.source,
-                            "short": true
-                        },
-                        {
-                            "title": "Bounce type",
-                            "value": bounce.bounceType + " - " + bounce.bounceSubType,
-                            "short": false
-                        }
-                    ]
-                }
-            ];
-
-            if (bounce.bouncedRecipients[0].diagnosticCode) {
-                attatchments[0]["fields"].push(
-                    {
-                        "title": "Diagnostic",
-                        "value": bounce.bouncedRecipients[0].diagnosticCode,
-                        "short": false
-                    }
-                );
-            }
+            payload = process_ses_bounce_notification(json_message);
         } else if (json_message.notificationType == "Complaint") {
             ses_notification = true;
-            message = "SES email complaint";
-            var complaint = json_message.complaint;
-            var recipients = [];
-            complaint.complainedRecipients.forEach(function(recipient) {
-                recipients.push(recipient.emailAddress);
-            });
-
-            attachments = [
-                {
-                    "fallback": message,
-                    "text" : message,
-                    "color": "warning",
-                    "fields": [
-                        {
-                            "title": "Recipients",
-                            "value": recipients.join(", "),
-                            "short": true
-                        },
-                        {
-                            "title": "Sender",
-                            "value": json_message.mail.source,
-                            "short": true
-                        }
-                    ]
-                }
-            ];
-
-            if (complaint.complaintFeedbackType) {
-                attatchments[0]["fields"].push(
-                    {
-                        "title": "Complain type",
-                        "value": complaint.complaintFeedbackType,
-                        "short": true
-                    }
-                );
-            }
+            payload = process_ses_complaint_notification(json_message);
         } else if (json_message.notificationType == "Delivery") {
             ses_notification = true;
-            message = "SES email delivery";
-            var mail = json_message.mail;
-            attachments = [
-                {
-                    "fallback": message,
-                    "text" : message,
-                    "color": "good",
-                    "fields": [
-                        {
-                            "title": "Recipients",
-                            "value": mail.destination.join(", "),
-                            "short": true
-                        },
-                        {
-                            "title": "Sender",
-                            "value": mail.source,
-                            "short": true
-                        },
-                        {
-                            "title": "Result",
-                            "value": json_message.delivery.smtpResponse,
-                            "short": false
-                        }
-                    ]
-                }
-            ];
+            payload = process_ses_delivery_notification(json_message);
         }
 
         var slackUrl =
@@ -207,8 +238,9 @@ exports.index = function(req, res){
             payload["attachments"] = attachments;
         }
         payload['text'] = message;
+        payload["subtype"] = "bot_message";
 
-        console.log("Sending message to Slack", message, slackUrl);
+        console.log("Sending message to Slack", payload['text'], slackUrl);
         request.post(
             slackUrl,
             {
