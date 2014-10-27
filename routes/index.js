@@ -37,7 +37,7 @@ function process_ses_bounce_notification(json_message) {
     ];
 
     if (bounce.bouncedRecipients[0].diagnosticCode) {
-        attatchments[0]["fields"].push(
+        attachments[0]["fields"].push(
             {
                 "title": "Diagnostic",
                 "value": bounce.bouncedRecipients[0].diagnosticCode,
@@ -82,7 +82,7 @@ function process_ses_complaint_notification(json_message) {
     ];
 
     if (complaint.complaintFeedbackType) {
-        attatchments[0]["fields"].push(
+        attachments[0]["fields"].push(
             {
                 "title": "Complain type",
                 "value": complaint.complaintFeedbackType,
