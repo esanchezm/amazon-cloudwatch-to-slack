@@ -127,11 +127,6 @@ exports.index = function(req, res){
                             "title": "Sender",
                             "value": complaint.source,
                             "short": true
-                        },
-                        {
-                            "title": "Bounce type",
-                            "value": complaint.complaintType + " - " + complaint.bounceSubType,
-                            "short": false
                         }
                     ]
                 }
