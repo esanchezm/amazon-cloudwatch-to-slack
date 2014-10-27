@@ -94,11 +94,11 @@ exports.index = function(req, res){
                 }
             ];
 
-            if (json_message.bouncedRecipients[0].diagnosticCode) {
+            if (bounce.bouncedRecipients[0].diagnosticCode) {
                 attatchments[0]["fields"].push(
                     {
                         "title": "Diagnostic",
-                        "value": json_message.bouncedRecipients[0].diagnosticCode,
+                        "value": bounce.bouncedRecipients[0].diagnosticCode,
                         "short": false
                     }
                 );
