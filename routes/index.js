@@ -4,12 +4,12 @@
 
 function process_ses_bounce_notification(json_message) {
     var payload = {};
-    var message = "SES email bounced";
     var bounce = json_message.bounce;
     var recipients = [];
     bounce.bouncedRecipients.forEach(function(recipient) {
         recipients.push(recipient.emailAddress);
     });
+    var message = "Email bounced from "+json_message.mail.source+" to "+recipients.join(", ");
 
     var attachments = [
         {
@@ -54,12 +54,12 @@ function process_ses_bounce_notification(json_message) {
 
 function process_ses_complaint_notification(json_message) {
     var payload = {};
-    var message = "SES email complaint";
     var complaint = json_message.complaint;
     var recipients = [];
     complaint.complainedRecipients.forEach(function(recipient) {
         recipients.push(recipient.emailAddress);
     });
+    var message = "Email complaint from "+json_message.mail.source+" to "+recipients.join(", ");
 
     var attachments = [
         {
@@ -99,8 +99,9 @@ function process_ses_complaint_notification(json_message) {
 
 function process_ses_delivery_notification(json_message) {
     var payload = {};
-    var message = "SES email delivery";
     var mail = json_message.mail;
+    var message = "Email delivery from "+mail.source+" to "+mail.destination.join(", ");
+
     attachments = [
         {
             "fallback": message,
