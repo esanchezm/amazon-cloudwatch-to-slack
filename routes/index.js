@@ -82,7 +82,7 @@ exports.index = function(req, res){
                         },
                         {
                             "title": "Sender",
-                            "value": bounce.source,
+                            "value": json_message.mail.source,
                             "short": true
                         },
                         {
@@ -125,7 +125,7 @@ exports.index = function(req, res){
                         },
                         {
                             "title": "Sender",
-                            "value": complaint.source,
+                            "value": json_message.mail.source,
                             "short": true
                         }
                     ]
