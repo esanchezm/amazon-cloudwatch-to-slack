@@ -1,0 +1,45 @@
+{
+    "name": "amazon-cloudwatch-to-slack",
+    "description": "Relay alerts from Amazon CloudWatch to a Slack.com room.",
+    "logo": "https://i.imgur.com/wxQoIRH.png",
+    "repository": "https://github.com/esanchezm/amazon-cloudwatch-to-slack",
+    "keywords": ["aws", "cloudwatch", "slack"],
+    "success_url": "/",
+    "env": {
+        "SLACK_COMPANY_NAME": {
+            "description": "Name of your Slack team",
+            "required": true
+        },
+        "SLACK_TOKEN": {
+            "description": "Secret Slack token",
+            "required": true
+        },
+        "SLACK_CHANNEL": {
+            "description": "Slack channel to use"
+        },
+        "SLACK_USERNAME": {
+            "description": "Slack user name to use",
+            "value": "AWS CloudWatch",
+            "required": false
+        },
+        "SLACK_ICON_URL": {
+            "description": "Slack icon to use",
+            "value": "https://i.imgur.com/wxQoIRH.png",
+            "required": false
+        },
+        "SLACK_SES_CHANNEL": {
+            "description": "Slack channel to use for SES notifications",
+            "required": false
+        },
+        "SLACK_SES_USERNAME": {
+            "description": "Slack user name to use for SES notifications",
+            "value": "AWS SES",
+            "required": false
+        },
+        "SLACK_SES_ICON_URL": {
+            "description": "Slack icon to use for SES notifications",
+            "value": "https://i.imgur.com/WnBZVVb.png",
+            "required": false
+        }
+    }
+}
