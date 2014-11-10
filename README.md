@@ -43,6 +43,10 @@ heroku config:set SLACK_SES_CHANNEL=#otherchannel\
                   SLACK_SES_ICON_URL="http://www.example.com/bot_avatar.png"
 ```
 
+Or just push the button:
+
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 Setup Amazon SNS:
 * Create a new Topic, or select an existing Topic
 * Add a New Subscription to the topic
