@@ -203,11 +203,16 @@ exports.index = function(req, res) {
             payload = process_ses_delivery_notification(json_message);
         }
 
-        var slackUrl =
-            'https://' +
-            process.env.SLACK_COMPANY_NAME +
-            '.slack.com/services/hooks/incoming-webhook?token=' +
-            process.env.SLACK_TOKEN;
+        var slackUrl;
+        if (typeof process.env.SLACK_WEBHOOK_URL != "undefined") {
+            slackUrl = process.env.SLACK_WEBHOOK_URL;
+        } else {
+            slackUrl =
+                'https://' +
+                process.env.SLACK_COMPANY_NAME +
+                '.slack.com/services/hooks/incoming-webhook?token=' +
+                process.env.SLACK_TOKEN;
+        }
 
         if (typeof process.env.SLACK_USERNAME != "undefined") {
             payload["username"] = process.env.SLACK_USERNAME;

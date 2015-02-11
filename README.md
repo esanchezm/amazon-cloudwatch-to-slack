@@ -22,8 +22,7 @@ git clone https://github.com/esanchezm/amazon-cloudwatch-to-slack.git
 
 cd amazon-cloudwatch-to-slack
 heroku apps:create
-heroku config:set SLACK_COMPANY_NAME=yourcompany \
-                  SLACK_TOKEN=12345 \
+heroku config:set 'SLACK_WEBHOOK_URL=https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX'
 git push heroku master
 ```
 
@@ -32,7 +31,7 @@ You can optionally set a diferent slack channel, username or avatar to customize
 ```
 heroku config:set SLACK_CHANNEL=#yourchannel\
                   SLACK_USERNAME="AWS CloudWatch" \
-                  SLACK_ICON_URL="http://www.example.com/bot_avatar.png"
+                  SLACK_ICON_URL="http://www.example.com/bot_avatar.png" \
                   SLACK_ICON_EMOJI=":ghost:"
 ```
 
@@ -43,9 +42,9 @@ Additional configuration parameters for SES notifications:
 ```
 heroku config:set SLACK_SES_CHANNEL=#otherchannel\
                   SLACK_SES_USERNAME="AWS SES" \
-                  SLACK_SES_ICON_URL="http://www.example.com/bot_avatar.png"
+                  SLACK_SES_ICON_URL="http://www.example.com/bot_avatar.png" \
+                  SLACK_SES_ICON_EMOJI=":ghost:"
 ```
-
 
 Or just push the button:
 
