@@ -217,6 +217,10 @@ exports.index = function(req, res) {
             payload["icon_url"] = process.env.SLACK_ICON_URL;
         }
 
+        if (typeof process.env.SLACK_ICON_EMOJI != "undefined") {
+            payload["icon_emoji"] = process.env.SLACK_ICON_EMOJI;
+        }
+
         if (typeof process.env.SLACK_CHANNEL != "undefined") {
             payload["channel"] = process.env.SLACK_CHANNEL;
         }
@@ -228,6 +232,10 @@ exports.index = function(req, res) {
 
             if (typeof process.env.SLACK_SES_ICON_URL != "undefined") {
                 payload["icon_url"] = process.env.SLACK_SES_ICON_URL;
+            }
+
+            if (typeof process.env.SLACK_SES_ICON_EMOJI != "undefined") {
+                payload["icon_emoji"] = process.env.SLACK_SES_ICON_EMOJI;
             }
 
             if (typeof process.env.SLACK_SES_CHANNEL != "undefined") {
