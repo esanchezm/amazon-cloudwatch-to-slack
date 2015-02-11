@@ -33,7 +33,10 @@ You can optionally set a diferent slack channel, username or avatar to customize
 heroku config:set SLACK_CHANNEL=#yourchannel\
                   SLACK_USERNAME="AWS CloudWatch" \
                   SLACK_ICON_URL="http://www.example.com/bot_avatar.png"
+                  SLACK_ICON_EMOJI=":ghost:"
 ```
+
+Notice that `SLACK_ICON_URL` and `SLACK_ICON_EMOJI` are mutually exclusive.
 
 Additional configuration parameters for SES notifications:
 
@@ -42,6 +45,7 @@ heroku config:set SLACK_SES_CHANNEL=#otherchannel\
                   SLACK_SES_USERNAME="AWS SES" \
                   SLACK_SES_ICON_URL="http://www.example.com/bot_avatar.png"
 ```
+
 
 Or just push the button:
 
