@@ -6,12 +6,8 @@
     "keywords": ["aws", "cloudwatch", "slack"],
     "success_url": "/",
     "env": {
-        "SLACK_COMPANY_NAME": {
-            "description": "Name of your Slack team",
-            "required": true
-        },
-        "SLACK_TOKEN": {
-            "description": "Secret Slack token",
+        "SLACK_WEBHOOK_URL": {
+            "description": "Your incoming webhook url",
             "required": true
         },
         "SLACK_CHANNEL": {
