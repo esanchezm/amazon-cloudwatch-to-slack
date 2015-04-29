@@ -201,6 +201,8 @@ exports.index = function(req, res) {
         } else if (json_message.notificationType == "Delivery") {
             ses_notification = true;
             payload = process_ses_delivery_notification(json_message);
+        } else {
+            payload['text'] = message;
         }
 
         var slackUrl;
