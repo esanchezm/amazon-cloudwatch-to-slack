@@ -133,6 +133,52 @@ function process_ses_delivery_notification(json_message) {
     return payload;
 }
 
+function process_autoscale_notification(message, json_message) {
+    var payload = {};
+
+    attachments = [
+        {
+            "fallback": message,
+            "text" : message,
+            "color": "good",
+            "fields": [
+                {
+                    "title": "Description",
+                    "value": json_message.Description,
+                    "short": true
+                },
+                {
+                    "title": "Cause",
+                    "value": json_message.Cause,
+                    "short": false
+                }
+            ]
+        }
+    ];
+
+    if (json_message.Details && json_message.Details.InvokingAlarms) {
+        attachments['fields'].push(
+            {
+                "title": "Alarm",
+                "value": json_message.Details.InvokingAlarms.AlarmName,
+                "short": true
+            }
+        );
+        attachments['fields'].push(
+            {
+                "title": "Alarm reason",
+                "value": json_message.Details.InvokingAlarms.NewStateReason,
+                "short": false
+            }
+        );
+    }
+
+    payload["attachments"] = attachments;
+    payload['text'] = message;
+
+    return payload;
+}
+
 exports.index = function(req, res) {
     var request = require('request');
 
