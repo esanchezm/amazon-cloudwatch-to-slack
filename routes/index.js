@@ -134,7 +134,13 @@ function process_ses_delivery_notification(json_message) {
 }
 
 function process_autoscale_notification(message, json_message) {
-    var payload = {};
+    var payload = {
+        'text': message
+    };
+
+    if (json_message.Event == "autoscaling:TEST_NOTIFICATION") {
+        return payload
+    }
 
     attachments = [
         {
@@ -174,7 +180,6 @@ function process_autoscale_notification(message, json_message) {
     }
 
     payload["attachments"] = attachments;
-    payload['text'] = message;
 
     return payload;
 }
