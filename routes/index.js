@@ -247,6 +247,8 @@ exports.index = function(req, res) {
         } else if (json_message.notificationType == "Delivery") {
             ses_notification = true;
             payload = process_ses_delivery_notification(json_message);
+        } else if (json_message.Service == "AWS Auto Scaling") {
+            payload = process_autoscale_notification(message, json_message);
         } else {
             payload['text'] = message;
         }
