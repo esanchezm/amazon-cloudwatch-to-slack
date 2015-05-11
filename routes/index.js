@@ -166,14 +166,14 @@ function process_autoscale_notification(message, json_message) {
         attachments[0]['fields'].push(
             {
                 "title": "Alarm",
-                "value": json_message.Details.InvokingAlarms.AlarmName,
+                "value": json_message.Details.InvokingAlarms[0].AlarmName,
                 "short": true
             }
         );
         attachments[0]['fields'].push(
             {
                 "title": "Alarm reason",
-                "value": json_message.Details.InvokingAlarms.NewStateReason,
+                "value": json_message.Details.InvokingAlarms[0].NewStateReason,
                 "short": false
             }
         );
