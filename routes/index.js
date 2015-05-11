@@ -163,14 +163,14 @@ function process_autoscale_notification(message, json_message) {
     ];
 
     if (json_message.Details && json_message.Details.InvokingAlarms) {
-        attachments['fields'].push(
+        attachments[0]['fields'].push(
             {
                 "title": "Alarm",
                 "value": json_message.Details.InvokingAlarms.AlarmName,
                 "short": true
             }
         );
-        attachments['fields'].push(
+        attachments[0]['fields'].push(
             {
                 "title": "Alarm reason",
                 "value": json_message.Details.InvokingAlarms.NewStateReason,
