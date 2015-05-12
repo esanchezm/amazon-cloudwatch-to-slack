@@ -216,6 +216,76 @@ function process_alarm_notification(message, json_message) {
     return payload;
 }
 
+function send_message_to_slack(request, res, payload, ses_notification) {
+    var slackUrl;
+
+    if (typeof process.env.SLACK_WEBHOOK_URL != "undefined") {
+        slackUrl = process.env.SLACK_WEBHOOK_URL;
+    } else {
+        slackUrl =
+            'https://' +
+            process.env.SLACK_COMPANY_NAME +
+            '.slack.com/services/hooks/incoming-webhook?token=' +
+            process.env.SLACK_TOKEN;
+    }
+
+    if (typeof process.env.SLACK_USERNAME != "undefined") {
+        payload["username"] = process.env.SLACK_USERNAME;
+    }
+
+    if (typeof process.env.SLACK_ICON_URL != "undefined") {
+        payload["icon_url"] = process.env.SLACK_ICON_URL;
+    }
+
+    if (typeof process.env.SLACK_ICON_EMOJI != "undefined") {
+        payload["icon_emoji"] = process.env.SLACK_ICON_EMOJI;
+    }
+
+    if (typeof process.env.SLACK_CHANNEL != "undefined") {
+        payload["channel"] = process.env.SLACK_CHANNEL;
+    }
+
+    if (ses_notification) {
+        if (typeof process.env.SLACK_SES_USERNAME != "undefined") {
+            payload["username"] = process.env.SLACK_SES_USERNAME;
+        }
+
+        if (typeof process.env.SLACK_SES_ICON_URL != "undefined") {
+            payload["icon_url"] = process.env.SLACK_SES_ICON_URL;
+        }
+
+        if (typeof process.env.SLACK_SES_ICON_EMOJI != "undefined") {
+            payload["icon_emoji"] = process.env.SLACK_SES_ICON_EMOJI;
+        }
+
+        if (typeof process.env.SLACK_SES_CHANNEL != "undefined") {
+            payload["channel"] = process.env.SLACK_SES_CHANNEL;
+        }
+    }
+
+    payload["subtype"] = "bot_message";
+
+    console.log("Sending message to Slack", payload['text'], slackUrl);
+    request.post(
+        slackUrl,
+        {
+            form: {
+                "payload": JSON.stringify(payload)
+            }
+        },
+        function (err, result, body) {
+            if (err) {
+                console.log("Error sending message to Slack", err, slackUrl, body);
+                return res.send('Error', 500);
+            }
+
+            console.log("Sent message to Slack", slackUrl);
+
+            res.send('Ok');
+        }
+    );
+}
+
 exports.index = function(req, res) {
     var request = require('request');
 
@@ -266,71 +336,6 @@ exports.index = function(req, res) {
             payload['text'] = message;
         }
 
-        var slackUrl;
-        if (typeof process.env.SLACK_WEBHOOK_URL != "undefined") {
-            slackUrl = process.env.SLACK_WEBHOOK_URL;
-        } else {
-            slackUrl =
-                'https://' +
-                process.env.SLACK_COMPANY_NAME +
-                '.slack.com/services/hooks/incoming-webhook?token=' +
-                process.env.SLACK_TOKEN;
-        }
-
-        if (typeof process.env.SLACK_USERNAME != "undefined") {
-            payload["username"] = process.env.SLACK_USERNAME;
-        }
-
-        if (typeof process.env.SLACK_ICON_URL != "undefined") {
-            payload["icon_url"] = process.env.SLACK_ICON_URL;
-        }
-
-        if (typeof process.env.SLACK_ICON_EMOJI != "undefined") {
-            payload["icon_emoji"] = process.env.SLACK_ICON_EMOJI;
-        }
-
-        if (typeof process.env.SLACK_CHANNEL != "undefined") {
-            payload["channel"] = process.env.SLACK_CHANNEL;
-        }
-
-        if (ses_notification) {
-            if (typeof process.env.SLACK_SES_USERNAME != "undefined") {
-                payload["username"] = process.env.SLACK_SES_USERNAME;
-            }
-
-            if (typeof process.env.SLACK_SES_ICON_URL != "undefined") {
-                payload["icon_url"] = process.env.SLACK_SES_ICON_URL;
-            }
-
-            if (typeof process.env.SLACK_SES_ICON_EMOJI != "undefined") {
-                payload["icon_emoji"] = process.env.SLACK_SES_ICON_EMOJI;
-            }
-
-            if (typeof process.env.SLACK_SES_CHANNEL != "undefined") {
-                payload["channel"] = process.env.SLACK_SES_CHANNEL;
-            }
-        }
-
-        payload["subtype"] = "bot_message";
-
-        console.log("Sending message to Slack", payload['text'], slackUrl);
-        request.post(
-            slackUrl,
-            {
-                form: {
-                    "payload": JSON.stringify(payload)
-                }
-            },
-            function (err, result, body) {
-                if (err) {
-                    console.log("Error sending message to Slack", err, slackUrl, body);
-                    return res.send('Error', 500);
-                }
-
-                console.log("Sent message to Slack", slackUrl);
-
-                res.send('Ok');
-            }
-        );
+        send_message_to_slack(request, res, payload, ses_notification);
     }
 };
