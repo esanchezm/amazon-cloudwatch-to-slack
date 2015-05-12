@@ -336,6 +336,25 @@ exports.index = function(req, res) {
             payload['text'] = message;
         }
 
+        if (json_message.SlackOptions) {
+            if (json_message.SlackOptions.Channel) {
+                payload['channel'] = json_message.SlackOptions.Channel;
+            }
+
+            if (json_message.SlackOptions.Username) {
+                payload['username'] = json_message.SlackOptions.Username;
+            }
+
+            if (json_message.SlackOptions.IconEmoji) {
+                payload['icon_emoji'] = json_message.SlackOptions.IconEmoji;
+            }
+
+            if (json_message.SlackOptions.IconURL) {
+                payload['icon_url'] = json_message.SlackOptions.IconURL;
+            }
+        }
+
+
         send_message_to_slack(request, res, payload, ses_notification);
     }
 };
