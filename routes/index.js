@@ -184,6 +184,38 @@ function process_autoscale_notification(message, json_message) {
     return payload;
 }
 
+function process_alarm_notification(message, json_message) {
+    var payload = {};
+
+    payload['text'] = message;
+    payload['attachments'] = [
+        {
+            "fallback": message,
+            "text" : message,
+            "color": json_message.NewStateValue == "ALARM" ? "warning" : "good",
+            "fields": [
+                {
+                    "title": "Alarm",
+                    "value": json_message.AlarmName,
+                    "short": true
+                },
+                {
+                    "title": "Status",
+                    "value": json_message.NewStateValue,
+                    "short": true
+                },
+                {
+                    "title": "Reason",
+                    "value": json_message.NewStateReason,
+                    "short": false
+                }
+            ]
+        }
+    ];
+
+    return payload;
+}
+
 exports.index = function(req, res) {
     var request = require('request');
 
@@ -216,31 +248,7 @@ exports.index = function(req, res) {
 
         var json_message = JSON.parse(sns.Message);
         if (json_message.AlarmName) {
-            payload['text'] = message;
-            payload['attachments'] = [
-                {
-                    "fallback": message,
-                    "text" : message,
-                    "color": json_message.NewStateValue == "ALARM" ? "warning" : "good",
-                    "fields": [
-                        {
-                            "title": "Alarm",
-                            "value": json_message.AlarmName,
-                            "short": true
-                        },
-                        {
-                            "title": "Status",
-                            "value": json_message.NewStateValue,
-                            "short": true
-                        },
-                        {
-                            "title": "Reason",
-                            "value": json_message.NewStateReason,
-                            "short": false
-                        }
-                    ]
-                }
-            ];
+            payload = process_alarm_notification(message, json_message);
         } else if (json_message.notificationType == "AmazonSnsSubscriptionSucceeded") {
             message = json_message.message;
         } else if (json_message.notificationType == "Bounce") {
